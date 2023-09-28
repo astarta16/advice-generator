@@ -59,10 +59,14 @@ const DesktopImg = styled.img`
 const CircleContainer = styled.div`
   position: absolute;
   top: 345px;
-
+  left: 50%;
+  transform: translateX(-50%);
   background-color: #53ffaa;
   border-radius: 50%;
   padding: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const DiceImg = styled.img`
