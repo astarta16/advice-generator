@@ -3,6 +3,8 @@ import styled from "styled-components";
 import MobileImage from "./assets/pattern-divider-mobile.svg";
 import DesktopImage from "./assets/pattern-divider-desktop.svg";
 import DiceImage from "./assets/icon-dice.svg";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -72,14 +74,28 @@ const CircleContainer = styled.div`
 const DiceImg = styled.img`
   width: 30px;
   height: 30px;
+  position: relative;
 `;
 
 function App() {
+  const [advice, SetAdvice] = useState("");
+
+  useEffect(() => {
+    axios
+      .get("https://api.adviceslip.com/advice")
+      .then((response) => {
+        const { advice } = response.data.slip;
+        SetAdvice(advice);
+      })
+      .catch((error) => {
+        console.log("error fetching advice:", error);
+      });
+  }, []);
   return (
     <Container>
       <Card>
         <Title>ADVICE #117</Title>
-        <Paragraph>random quote hey hey</Paragraph>
+        <Paragraph>{advice}</Paragraph>
         <MobileImg src={MobileImage} alt="Mobile Image" />
         <DesktopImg src={DesktopImage} alt="Desktop Image" />
         <CircleContainer>
