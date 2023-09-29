@@ -14,6 +14,7 @@ const Container = styled.div`
 `;
 
 const Card = styled.div`
+  max-height: 80vh;
   position: relative;
   width: 100%;
   max-width: 540px;
@@ -27,6 +28,8 @@ const Card = styled.div`
 
   @media (max-width: 767px) {
     width: 90%;
+    max-height: none;
+    padding: 40px 20px;
   }
 `;
 
@@ -42,6 +45,9 @@ const Paragraph = styled.p`
   font-family: "Manrope", sans-serif;
   font-size: 28px;
   padding: 40px;
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 const MobileImg = styled.img`
@@ -78,24 +84,23 @@ const DiceImg = styled.img`
 `;
 
 function App() {
-  const [adviceData, SetAdviceData] = useState({advice: "", id: ""});
+  const [adviceData, SetAdviceData] = useState({ advice: "", id: "" });
 
-const fetchData = () => {
+  const fetchData = () => {
     axios
       .get("https://api.adviceslip.com/advice")
       .then((response) => {
         const { advice, id } = response.data.slip;
-        SetAdviceData({advice,id});
-       
+        SetAdviceData({ advice, id });
       })
       .catch((error) => {
         console.log("error fetching advice:", error);
       });
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     fetchData();
-  },[])
+  }, []);
 
   return (
     <Container>
@@ -105,7 +110,7 @@ const fetchData = () => {
         <MobileImg src={MobileImage} alt="Mobile Image" />
         <DesktopImg src={DesktopImage} alt="Desktop Image" />
         <CircleContainer onClick={fetchData}>
-          <DiceImg  src={DiceImage} alt="Dice image" />
+          <DiceImg src={DiceImage} alt="Dice image" />
         </CircleContainer>
       </Card>
     </Container>
