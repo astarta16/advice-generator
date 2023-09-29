@@ -60,7 +60,7 @@ const DesktopImg = styled.img`
 
 const CircleContainer = styled.div`
   position: absolute;
-  top: 345px;
+  bottom: -20px;
   left: 50%;
   transform: translateX(-50%);
   background-color: #53ffaa;
@@ -78,28 +78,34 @@ const DiceImg = styled.img`
 `;
 
 function App() {
-  const [advice, SetAdvice] = useState("");
+  const [adviceData, SetAdviceData] = useState({advice: "", id: ""});
 
-  useEffect(() => {
+const fetchData = () => {
     axios
       .get("https://api.adviceslip.com/advice")
       .then((response) => {
-        const { advice } = response.data.slip;
-        SetAdvice(advice);
+        const { advice, id } = response.data.slip;
+        SetAdviceData({advice,id});
+       
       })
       .catch((error) => {
         console.log("error fetching advice:", error);
       });
-  }, []);
+  };
+
+  useEffect(()=> {
+    fetchData();
+  },[])
+
   return (
     <Container>
       <Card>
-        <Title>ADVICE #117</Title>
-        <Paragraph>{advice}</Paragraph>
+        <Title>ADVICE {adviceData.id} </Title>
+        <Paragraph>{adviceData.advice}</Paragraph>
         <MobileImg src={MobileImage} alt="Mobile Image" />
         <DesktopImg src={DesktopImage} alt="Desktop Image" />
-        <CircleContainer>
-          <DiceImg src={DiceImage} alt="Dice image" />
+        <CircleContainer onClick={fetchData}>
+          <DiceImg  src={DiceImage} alt="Dice image" />
         </CircleContainer>
       </Card>
     </Container>
